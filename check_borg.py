@@ -53,15 +53,15 @@ def size_format(b):
    Format bytes to human readable values
    """
    if b < 1000:
-             return '%i' % b + 'B'
+             return '%i' % b + ' B'
    elif 1000 <= b < 1000000:
-       return '%.1f' % float(b/1000) + 'KB'
+       return '%.1f' % float(b/1000) + ' KB'
    elif 1000000 <= b < 1000000000:
-       return '%.1f' % float(b/1000000) + 'MB'
+       return '%.1f' % float(b/1000000) + ' MB'
    elif 1000000000 <= b < 1000000000000:
-       return '%.1f' % float(b/1000000000) + 'GB'
+       return '%.1f' % float(b/1000000000) + ' GB'
    elif 1000000000000 <= b:
-       return '%.1f' % float(b/1000000000000) + 'TB'
+       return '%.1f' % float(b/1000000000000) + ' TB'
 
 def main():
    """
@@ -118,11 +118,12 @@ def main():
    arch_age      = round((datetime.now() - arch_end).total_seconds()/3600, 1)
 
    if stats:
-       arch_duration = round(bm_info_json[0]['archives'][0]['duration'])
-       arch_cmp_size = round(bm_info_json[0]['archives'][0]['stats']['compressed_size'] / (1024 * 1024))
-       arch_org_size = round(bm_info_json[0]['archives'][0]['stats']['original_size'] / (1024 * 1024))
-       arch_ded_size = round(bm_info_json[0]['archives'][0]['stats']['deduplicated_size'] / (1024 * 1024))
-       perf_data = f" | duration={arch_duration}, compressed_size={arch_cmp_size}, original_size={arch_org_size}, deduplicated_size={arch_ded_size}"
+       arch_duration = bm_info_json[0]['archives'][0]['duration']
+       arch_cmp_size = size_format(bm_info_json[0]['archives'][0]['stats']['compressed_size'])
+       arch_org_size = size_format(bm_info_json[0]['archives'][0]['stats']['original_size'])
+       arch_ded_size = size_format(bm_info_json[0]['archives'][0]['stats']['deduplicated_size'])
+
+       perf_data = f" | duration={arch_duration} s, compressed_size={arch_cmp_size}, original_size={arch_org_size}, deduplicated_size={arch_ded_size}"
    else:
        perf_data = ""
 
