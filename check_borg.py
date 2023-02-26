@@ -117,12 +117,14 @@ def main():
    arch_end      = datetime.strptime(bm_info_json[0]['archives'][0]['end'], '%Y-%m-%dT%H:%M:%S.000000')
    arch_age      = round((datetime.now() - arch_end).total_seconds()/3600, 1)
 
-   arch_duration = round(bm_info_json[0]['archives'][0]['duration'])
-   arch_cmp_size = round(bm_info_json[0]['archives'][0]['stats']['compressed_size'] / (1024 * 1024))
-   arch_org_size = round(bm_info_json[0]['archives'][0]['stats']['original_size'] / (1024 * 1024))
-   arch_ded_size = round(bm_info_json[0]['archives'][0]['stats']['deduplicated_size'] / (1024 * 1024))
-
-   perf_data = f" | duration={arch_duration}, compressed_size={arch_cmp_size}, original_size={arch_org_size}, deduplicated_size={arch_ded_size}" if stats else ""
+   if stats:
+       arch_duration = round(bm_info_json[0]['archives'][0]['duration'])
+       arch_cmp_size = round(bm_info_json[0]['archives'][0]['stats']['compressed_size'] / (1024 * 1024))
+       arch_org_size = round(bm_info_json[0]['archives'][0]['stats']['original_size'] / (1024 * 1024))
+       arch_ded_size = round(bm_info_json[0]['archives'][0]['stats']['deduplicated_size'] / (1024 * 1024))
+       perf_data = f" | duration={arch_duration}, compressed_size={arch_cmp_size}, original_size={arch_org_size}, deduplicated_size={arch_ded_size}"
+   else:
+       perf_data = ""
 
    if arch_age < overdue:
        msg = f"BORG OK: {arch_age}h since last backup.{perf_data}"
