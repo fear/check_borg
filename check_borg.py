@@ -123,7 +123,7 @@ def main():
        arch_org_size = size_format(bm_info_json[0]['archives'][0]['stats']['original_size'])
        arch_ded_size = size_format(bm_info_json[0]['archives'][0]['stats']['deduplicated_size'])
 
-       perf_data = f" | duration={arch_duration} s, compressed_size={arch_cmp_size}, original_size={arch_org_size}, deduplicated_size={arch_ded_size}"
+       perf_data = f" | duration={arch_duration} s, size_cmp={arch_cmp_size}, size_org={arch_org_size}, size_ded={arch_ded_size}"
    else:
        perf_data = ""
 
