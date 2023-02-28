@@ -52,16 +52,16 @@ def size_format(b):
    """
    Format bytes to human readable values
    """
-   if b < 1000:
+   if b < 1024:
              return '%i' % b + ' B'
-   elif 1000 <= b < 1000000:
-       return '%.1f' % float(b/1000) + ' KB'
-   elif 1000000 <= b < 1000000000:
-       return '%.1f' % float(b/1000000) + ' MB'
-   elif 1000000000 <= b < 1000000000000:
-       return '%.1f' % float(b/1000000000) + ' GB'
-   elif 1000000000000 <= b:
-       return '%.1f' % float(b/1000000000000) + ' TB'
+   elif 1024 <= b < (1024 * 1024):
+       return '%.1f' % float(b/1024) + ' KB'
+   elif (1024 * 1024) <= b < (1024 * 1024 * 1024):
+       return '%.1f' % float(b/(1024 * 1024) + ' MB'
+   elif (1024 * 1024 * 1024) <= b < (1024 * 1024 * 1024 * 1024):
+       return '%.1f' % float(b/(1024 * 1024 * 1024)) + ' GB'
+   elif (1024 * 1024 * 1024 * 1024) <= b:
+       return '%.1f' % float(b/(1024 * 1024 * 1024 * 1024)) + ' TB'
 
 def main():
    """
