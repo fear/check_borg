@@ -3,7 +3,9 @@
 import argparse
 import json
 import logging
-import os, sys
+import os
+import sys
+import re
 import subprocess
 
 from datetime import datetime
@@ -118,13 +120,20 @@ def main():
    res = pipe.communicate()
 
    if pipe.returncode != 0:
-       msg = f"BORG CRITICAL: Error reading repository!"
-       if nagios_output:
-           print(msg)
+       if not re.search(res[1], "Failed to create/acquire the lock"):
+           msg = f"BORG CRITICAL: res[1]"
+           if nagios_output:
+               print(msg)
+           else:
+               mylogger.critical(msg)
+           sys.exit(CRITICAL)
        else:
-           mylogger.critical(msg)
-       sys.exit(CRITICAL)
-     # print("stderr =", res[1])
+           msg = f"BORG WARNING: Failed to create/acquire the lock!"
+           if nagios_output:
+               print(msg)
+           else:
+               mylogger.warning(msg)
+           sys.exit(WARNING)
 
    bm_info_json = json.loads(res[0])
 
