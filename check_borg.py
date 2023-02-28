@@ -4,6 +4,7 @@ import argparse
 import json
 import logging
 import os, sys
+import subprocess
 
 from datetime import datetime
 
@@ -57,11 +58,12 @@ def size_format(b):
    elif 1024 <= b < (1024 * 1024):
        return '%.1f' % float(b/1024) + ' KB'
    elif (1024 * 1024) <= b < (1024 * 1024 * 1024):
-       return '%.1f' % float(b/(1024 * 1024) + ' MB'
+       return '%.1f' % float(b/(1024 * 1024)) + ' MB'
    elif (1024 * 1024 * 1024) <= b < (1024 * 1024 * 1024 * 1024):
        return '%.1f' % float(b/(1024 * 1024 * 1024)) + ' GB'
    elif (1024 * 1024 * 1024 * 1024) <= b:
        return '%.1f' % float(b/(1024 * 1024 * 1024 * 1024)) + ' TB'
+#   return b
 
 def main():
    """
@@ -111,7 +113,20 @@ def main():
    #####################################
 
    mylogger.debug("Running os command line : %s" % cmd_bm_info)
-   bm_info_json = json.loads(os.popen(cmd_bm_info).readline().strip())
+
+   pipe = subprocess.Popen(cmd_bm_info, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+   res = pipe.communicate()
+
+   if pipe.returncode != 0:
+       msg = f"BORG CRITICAL: Error reading repository!"
+       if nagios_output:
+           print(msg)
+       else:
+           mylogger.critical(msg)
+       sys.exit(CRITICAL)
+     # print("stderr =", res[1])
+
+   bm_info_json = json.loads(res[0])
 
    # Parsing Values from JSON
    arch_end      = datetime.strptime(bm_info_json[0]['archives'][0]['end'], '%Y-%m-%dT%H:%M:%S.000000')
