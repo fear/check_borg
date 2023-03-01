@@ -1,8 +1,20 @@
 # check_borg
 This is a simpkle Nagios plugin to monitor borg backups using borgmatic. It has an centralized approch, Monitoring everything from the host the script is running. 
 
-Make shure borgmnatic can talk to your Repos. this coul be a possible call: `--run-as-root -c /etc/borgmatic/librenms.yaml --stats -r ssh://backup/home/backups/ds.star.home --nagios`
+## installation
+For installation simple clone this repo to your prefered place like `/opt`:
+```
+git clone https://github.com/fear/check_borg.git /opt
+```
+after this link the script to your nagios folder:
+```
+ln -s /opt/check_borg/check_borg.py /usr/lib/nagios/plugins/check_borg
+```
 
+## usage
+Make sure borgmnatic can talk to your Repos (borgmatic info). The most simple call is ./check_borg without arguments. If u have diffrent repos defint in your config u should specify them. On nagios run the --nagios flag tochange the outputformat. A more specific call coul be this: `--run-as-root -c /etc/borgmatic/librenms.yaml --stats -r ssh://backup/home/backups/ds.star.home --nagios` while 
+
+### params
 ```
 usage: check_borg [-h] [-H HOST] [-r REPO] [-c CONFIG] [-a ARCHIVE] [-d OVERDUE] [-v] [--borgmatic BORGMATIC]
                   [--log-file LOGFILE] [--nagios] [--run-as-root] [--stats]
