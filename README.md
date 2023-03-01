@@ -27,5 +27,8 @@ Options:
   --nagios              enable nagios output mode
   --run-as-root         run borgmatic command with sudo
   --stats               Send perf data
-
 ```
+
+
+if running borg as root make sure to grant only the nessesary priviliges in `\etc\sudoers` like in this example: 
+`librenms  ALL=(root) NOPASSWD: /usr/local/bin/borgmatic` 
